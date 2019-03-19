@@ -1,7 +1,10 @@
 {
-    "extends": ["airbnb", "prettier"],
-    "plugins": ["prettier"],
-    "rules": {
-        "prettier/prettier": ["error"]
-    }
+  "extends": ["airbnb", "prettier", "plugin:meteor/recommended"],
+  "plugins": ["prettier", "meteor"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+  "settings": {
+    "import/resolver": "meteor"
+  }
 }
