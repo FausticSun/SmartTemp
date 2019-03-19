@@ -1,6 +1,6 @@
 {
-  "extends": ["airbnb", "prettier", "plugin:meteor/recommended"],
-  "plugins": ["prettier", "meteor"],
+  "extends": ["airbnb", "prettier", "plugin:meteor/recommended", "plugin:lodash-fp/recommended"],
+  "plugins": ["prettier", "meteor", "lodash-fp"],
   "rules": {
     "prettier/prettier": ["error"]
   },
