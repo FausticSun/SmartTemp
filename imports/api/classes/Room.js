@@ -4,7 +4,7 @@ import Rooms from '../collections/Rooms';
 
 const Room = Class.create({
   collection: Rooms,
-  room_id: Number,
+  roomId: Number,
   temperatures: {
     type: [Temperature]
   }
