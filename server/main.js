@@ -1,50 +1,30 @@
 import { Meteor } from 'meteor/meteor';
-import * as fs from 'fs';
-import * as csv from 'csv-parser';
-import map from 'lodash/fp/map';
-import groupBy from 'lodash/fp/groupBy';
-import toPairs from 'lodash/fp/toPairs';
-import forEach from 'lodash/fp/forEach';
-import flow from 'lodash/fp/flow';
-import Rooms from '../imports/api/collections/Rooms';
-import Room from '../imports/api/classes/Room';
-import Temperature from '../imports/api/classes/Temperature';
+import fs from 'fs';
+import Papa from 'papaparse';
+import TemperaturePoint from '../imports/api/classes/TemperaturePoint';
 
-function createTemperature(dataPoint) {
-  return new Temperature(
-    {
-      timestamp: new Date(dataPoint.timestamp),
-      temperature: dataPoint.temperature
-    },
-    { cast: true }
-  );
-}
-
-function createRoom([dataPointList, roomId]) {
-  return new Room(
-    {
-      roomId,
-      temperatures: map(createTemperature)(dataPointList)
-    },
-    { cast: true }
-  );
-}
-
-function readRooms() {
-  const results = [];
-  fs.createReadStream('room-temperatures.csv')
-    .pipe(csv())
-    .on('data', data => results.push(data));
-  const roomList = flow(
-    groupBy(dataPoint => dataPoint.RoomId),
-    toPairs,
-    map(createRoom)
-  )(results);
-  forEach(room => room.save())(roomList);
+function populateDB() {
+  fs.createReadStream(Assets.absoluteFilePath('room-temperatures.csv'))
+    .pipe(Papa.parse(Papa.NODE_STREAM_INPUT, { header: true }))
+    .on(
+      'data',
+      Meteor.bindEnvironment(({ RoomId: roomId, timestamp, temperature }) =>
+        new TemperaturePoint(
+          {
+            roomId,
+            timestamp,
+            temperature
+          },
+          { cast: true }
+        ).save()
+      )
+    );
 }
 
 Meteor.startup(() => {
-  if (Rooms.find().count() === 0) {
-    readRooms();
+  TemperaturePoint.remove({});
+  if (TemperaturePoint.find().count() === 0) {
+    console.log('Populating DB');
+    populateDB();
   }
 });
