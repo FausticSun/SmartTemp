@@ -1,29 +1,34 @@
 import { Meteor } from 'meteor/meteor';
 import fs from 'fs';
 import Papa from 'papaparse';
-import TemperaturePoint from '../imports/api/classes/TemperaturePoint';
+import Temperatures from '../imports/api/collections/Temperatures';
+
+function convertAndInsertData(data) {
+  console.log('Converting data points');
+  const temperaturePoints = data.map(({ RoomId: roomId, timestamp, temperature }) => {
+    return {
+      roomId: Number(roomId),
+      timestamp: new Date(timestamp),
+      temperature: Number(temperature)
+    };
+  });
+  console.log('Conversion complete');
+  console.log(temperaturePoints);
+  temperaturePoints.forEach(point =>
+    Temperatures.insert(point, () => console.log('Insert success'))
+  );
+}
 
 function populateDB() {
-  fs.createReadStream(Assets.absoluteFilePath('room-temperatures.csv'))
-    .pipe(Papa.parse(Papa.NODE_STREAM_INPUT, { header: true }))
-    .on(
-      'data',
-      Meteor.bindEnvironment(({ RoomId: roomId, timestamp, temperature }) =>
-        new TemperaturePoint(
-          {
-            roomId,
-            timestamp,
-            temperature
-          },
-          { cast: true }
-        ).save()
-      )
-    );
+  Papa.parse(fs.createReadStream(Assets.absoluteFilePath('room-temperatures.csv')), {
+    header: true,
+    complete: results => Meteor.bindEnvironment(convertAndInsertData(results.data))
+  });
 }
 
 Meteor.startup(() => {
-  TemperaturePoint.remove({});
-  if (TemperaturePoint.find().count() === 0) {
+  Temperatures.remove({});
+  if (Temperatures.find().count() === 0) {
     console.log('Populating DB');
     populateDB();
   }
