@@ -26,12 +26,6 @@ if (Meteor.isServer) {
         }
       },
       {
-        $sort: {
-          RoomId: 1.0,
-          timestamp: 1.0
-        }
-      },
-      {
         $bucketAuto: {
           groupBy: '$timestamp',
           buckets: sampleRate,
