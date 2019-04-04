@@ -1,18 +1,19 @@
 import { Meteor } from 'meteor/meteor';
+import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
 import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
 
 const Temperatures = new Mongo.Collection('Temperatures');
 
 if (Meteor.isServer) {
-  Meteor.publish('Temperatures', ([startDateTime, endDateTime], visibleRooms, sampleRate) => {
-    check(startDateTime, Date);
-    check(endDateTime, Date);
+  Meteor.publish('Temperatures', function callback({ dateTimeRange, visibleRooms, sampleRate }) {
+    check(dateTimeRange, [Date]);
     check(visibleRooms, [Number]);
     check(sampleRate, Number);
 
-    const collections = Temperatures.rawCollection();
-    const options = { allowDiskUse: false };
+    const startDateTime = dateTimeRange[0];
+    const endDateTime = dateTimeRange[1];
+
     const pipeline = [
       {
         $match: {
@@ -70,7 +71,7 @@ if (Meteor.isServer) {
         }
       }
     ];
-    return collections.aggregate(pipeline, options);
+    ReactiveAggregate(this, Temperatures, pipeline);
   });
 }
 

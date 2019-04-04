@@ -1,0 +1,20 @@
+{
+  "title": "Temperature",
+  "description": "A temperature data point recorded",
+  "bsonType": "object",
+  "properties": {
+    "roomId": {
+      "description": "The unique identifier of the room in which this data point is recorded from",
+      "bsonType": "int"
+    },
+    "timestamp": {
+      "description": "The time at which the data point is recorded",
+      "bsonType": "date"
+    },
+    "temperature": {
+      "description": "The temperature recorded",
+      "bsonType": "double"
+    }
+  },
+  "required": ["roomId", "timestamp", "temperature"]
+}
