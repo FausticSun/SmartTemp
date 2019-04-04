@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import LoadingOverlay from 'react-loading-overlay';
+import '../../client/main.css';
 
 const AppView = props => {
-  const { temperatures } = props;
+  const { temperatures, loading } = props;
   const avgTempList = temperatures.map(x => (
     <React.Fragment key={x._id /* eslint-disable-line no-underscore-dangle */}>
       <dt>{x._id /* eslint-disable-line no-underscore-dangle */}</dt>
@@ -11,14 +13,16 @@ const AppView = props => {
   ));
 
   return (
-    <div>
+    <React.Fragment>
+      <LoadingOverlay active={loading} spinner fadeSpeed={100} />
       <h1>Welcome to Meteor!</h1>
       <dl>{avgTempList}</dl>
-    </div>
+    </React.Fragment>
   );
 };
 
 AppView.propTypes = {
+  loading: PropTypes.bool.isRequired,
   temperatures: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.number.isRequired,
