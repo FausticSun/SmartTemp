@@ -31,8 +31,8 @@ class AppPresenter extends React.Component {
         visibleRooms={visibleRooms}
         sampleRate={sampleRate}
         dateTimeRangeHandler={this.updateDateTimeRange}
-        visibleRoomsHandler={this.visibleRoomsHandler}
-        sampleRateHandler={this.sampleRateHandler}
+        visibleRoomsHandler={this.updateVisibleRooms}
+        sampleRateHandler={this.updateSampleRate}
       />
     );
   }
