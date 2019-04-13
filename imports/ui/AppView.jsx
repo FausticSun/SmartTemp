@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingOverlay from 'react-loading-overlay';
+import Rooms from './Rooms.jsx';
 import '../../client/main.css';
 
 const AppView = props => {
-  const { temperatures, loading } = props;
+  const { temperatures, loading, visibleRoomsHandler, visibleRooms } = props;
   const avgTempList = temperatures.map(x => (
     <React.Fragment key={x._id /* eslint-disable-line no-underscore-dangle */}>
       <dt>{x._id /* eslint-disable-line no-underscore-dangle */}</dt>
@@ -15,8 +16,13 @@ const AppView = props => {
   return (
     <React.Fragment>
       <LoadingOverlay active={loading} spinner fadeSpeed={100} />
-      <h1>Welcome to Meteor!</h1>
+      {/* <h1>Welcome to Meteor!</h1> */}
       <dl>{avgTempList}</dl>
+      <Rooms
+        temperatures={temperatures}
+        visibleRooms={visibleRooms}
+        visibleRoomsHandler={visibleRoomsHandler}
+      />
     </React.Fragment>
   );
 };
@@ -35,6 +41,7 @@ AppView.propTypes = {
       average: PropTypes.number.isRequired
     })
   ).isRequired,
+  visibleRooms: PropTypes.arrayOf(PropTypes.number).isRequired,
   dateTimeRangeHandler: PropTypes.func.isRequired,
   visibleRoomsHandler: PropTypes.func.isRequired,
   sampleRateHandler: PropTypes.func.isRequired

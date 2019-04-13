@@ -9,6 +9,9 @@ class AppPresenter extends React.Component {
       visibleRooms: [0, 1, 2, 3, 4, 5, 6],
       sampleRate: 300
     };
+    this.updateDateTimeRange = this.updateDateTimeRange.bind(this);
+    this.updateVisibleRooms = this.updateVisibleRooms.bind(this);
+    this.updateSampleRate = this.updateSampleRate.bind(this);
   }
 
   updateDateTimeRange(dateTimeRange) {
