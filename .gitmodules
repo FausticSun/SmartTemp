@@ -1,0 +1,4 @@
+[submodule "packages/react-timeseries-charts"]
+	path = packages/react-timeseries-charts
+	url = git@github.com:FausticSun/react-timeseries-charts.git
+	branch = ctrl-pan-zoom

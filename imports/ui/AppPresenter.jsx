@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { debounce } from 'underscore';
 import AppModel from './AppModel.jsx';
 
 class AppPresenter extends React.Component {
@@ -13,9 +14,9 @@ class AppPresenter extends React.Component {
       visibleRooms: new ReactiveVar([0, 1, 2, 3, 4, 5, 6]),
       sampleRate: new ReactiveVar(300)
     };
-    this.updateDateTimeRange = this.updateDateTimeRange.bind(this);
-    this.updateVisibleRooms = this.updateVisibleRooms.bind(this);
-    this.updateSampleRate = this.updateSampleRate.bind(this);
+    this.updateDateTimeRange = debounce(this.updateDateTimeRange, 100).bind(this);
+    this.updateVisibleRooms = debounce(this.updateVisibleRooms, 100).bind(this);
+    this.updateSampleRate = debounce(this.updateSampleRate, 100).bind(this);
   }
 
   updateDateTimeRange(dateTimeRange) {
