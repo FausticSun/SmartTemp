@@ -7,8 +7,8 @@ import '../../client/main.css';
 const AppView = props => {
   const { temperatures, loading, visibleRoomsHandler, visibleRooms } = props;
   const avgTempList = temperatures.map(x => (
-    <React.Fragment key={x._id /* eslint-disable-line no-underscore-dangle */}>
-      <dt>{x._id /* eslint-disable-line no-underscore-dangle */}</dt>
+    <React.Fragment key={x._id}>
+      <dt>{x._id}</dt>
       <dd>{x.average}</dd>
     </React.Fragment>
   ));
@@ -16,7 +16,6 @@ const AppView = props => {
   return (
     <React.Fragment>
       <LoadingOverlay active={loading} spinner fadeSpeed={100} />
-      {/* <h1>Welcome to Meteor!</h1> */}
       <dl>{avgTempList}</dl>
       <Rooms
         temperatures={temperatures}
