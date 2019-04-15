@@ -17,9 +17,6 @@ if (Meteor.isServer) {
     const pipeline = [
       {
         $match: {
-          RoomId: {
-            $in: visibleRooms
-          },
           timestamp: {
             $gt: startDateTime,
             $lt: endDateTime

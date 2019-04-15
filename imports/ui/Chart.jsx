@@ -50,6 +50,9 @@ class Graph extends React.Component {
         enableDragZoom
         enablePanZoom
         onTimeRangeChanged={this.timeRangeChangeHander}
+        minDuration={36000000}
+        minTime={new Date('2013-10-02T05:00:00')}
+        maxTime={new Date('2013-12-03T15:15:00')}
       >
         <ChartRow height="200">
           <YAxis id="y" label="Temperature" min={0} max={40} width="60" type="linear" />

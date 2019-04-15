@@ -52,41 +52,55 @@ const processTemperaturesProp = temperatures => {
   return temperatures;
 };
 
-const Rooms = props => {
-  const { temperatures, visibleRooms, visibleRoomsHandler } = props;
-  const roomClickHandler = roomId => {
+class Rooms extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleRooms: props.visibleRooms
+    };
+    this.roomClickHandler = this.roomClickHandler.bind(this);
+  }
+
+  roomClickHandler(roomId) {
+    const { visibleRoomsHandler } = this.props;
+    const { visibleRooms } = this.state;
     if (visibleRooms.includes(roomId)) {
       visibleRooms.splice(visibleRooms.indexOf(roomId), 1);
     } else {
       visibleRooms.push(roomId);
       visibleRooms.sort();
     }
+    this.setState({ visibleRooms });
     visibleRoomsHandler(visibleRooms);
-  };
+  }
 
-  const rooms = processTemperaturesProp(temperatures).map(temperature => {
-    const isVisible = visibleRooms.includes(temperature._id);
-    return (
-      <button
-        className={isVisible ? '' : 'hidden'}
-        key={temperature._id}
-        onClick={() => roomClickHandler(temperature._id, visibleRooms, visibleRoomsHandler)}
-        type="button"
-      >
-        <svg
-          width={roomWidth + 2 * roomStrokeWidth}
-          height={roomHeight + 2 * roomStrokeWidth}
-          fill={temperatureToRgba(temperature.average)}
-          strokeWidth={roomStrokeWidth}
+  render() {
+    const { temperatures, visibleRooms, visibleRoomsHandler } = this.props;
+
+    const rooms = processTemperaturesProp(temperatures).map(temperature => {
+      const isVisible = visibleRooms.includes(temperature._id);
+      return (
+        <button
+          className={isVisible ? '' : 'hidden'}
+          key={temperature._id}
+          onClick={() => this.roomClickHandler(temperature._id, visibleRooms, visibleRoomsHandler)}
+          type="button"
         >
-          <rect x={roomStrokeWidth} y={roomStrokeWidth} width={roomWidth} height={roomHeight} />
-        </svg>
-        <h2>{`Room ${temperature._id}`}</h2>
-      </button>
-    );
-  });
-  return <div className="rooms">{rooms}</div>;
-};
+          <svg
+            width={roomWidth + 2 * roomStrokeWidth}
+            height={roomHeight + 2 * roomStrokeWidth}
+            fill={temperatureToRgba(temperature.average)}
+            strokeWidth={roomStrokeWidth}
+          >
+            <rect x={roomStrokeWidth} y={roomStrokeWidth} width={roomWidth} height={roomHeight} />
+          </svg>
+          <h2>{`Room ${temperature._id}`}</h2>
+        </button>
+      );
+    });
+    return <div className="rooms">{rooms}</div>;
+  }
+}
 
 Rooms.propTypes = {
   temperatures: PropTypes.arrayOf(

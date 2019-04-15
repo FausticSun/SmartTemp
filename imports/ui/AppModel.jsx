@@ -11,6 +11,7 @@ const AppModel = withTracker(({ dateTimeRange, visibleRooms, sampleRate }) => {
   });
   const loading = !handle.ready();
   const temperatures = Temperatures.find({}).fetch();
+  console.log(temperatures);
   return {
     loading,
     temperatures,
