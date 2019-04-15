@@ -12,10 +12,12 @@
     "lodash": "^4.17.11",
     "meteor-node-stubs": "^0.4.1",
     "papaparse": "^4.6.3",
+    "pondjs": "^0.8.10",
     "prop-types": "^15.7.2",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-loading-overlay": "^1.0.1"
+    "react-loading-overlay": "^1.0.1",
+    "react-timeseries-charts": "^0.15.5"
   },
   "meteor": {
     "mainModule": {
