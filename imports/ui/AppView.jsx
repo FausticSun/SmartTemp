@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import LoadingOverlay from 'react-loading-overlay';
 import Rooms from './Rooms.jsx';
 import Chart from './Chart.jsx';
+import ControlPanel from './ControlPanel.jsx';
 import '../../client/main.css';
 
 const AppView = props => {
@@ -12,7 +13,9 @@ const AppView = props => {
     visibleRoomsHandler,
     visibleRooms,
     dateTimeRange,
-    dateTimeRangeHandler
+    sampleRate,
+    dateTimeRangeHandler,
+    sampleRateHandler
   } = props;
   const avgTempList = temperatures.map(x => (
     <React.Fragment key={x._id}>
@@ -22,9 +25,15 @@ const AppView = props => {
   ));
 
   return (
-    <React.Fragment>
+    <div className="app-view">
       <LoadingOverlay active={loading} spinner fadeSpeed={100} />
       <dl>{avgTempList}</dl>
+      <ControlPanel
+        dateTimeRange={dateTimeRange}
+        sampleRate={sampleRate}
+        dateTimeRangeHandler={dateTimeRangeHandler}
+        sampleRateHandler={sampleRateHandler}
+      />
       <Chart
         temperatures={temperatures}
         dateTimeRange={dateTimeRange}
@@ -35,7 +44,7 @@ const AppView = props => {
         visibleRooms={visibleRooms}
         visibleRoomsHandler={visibleRoomsHandler}
       />
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -55,6 +64,7 @@ AppView.propTypes = {
   ).isRequired,
   visibleRooms: PropTypes.arrayOf(PropTypes.number).isRequired,
   dateTimeRange: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
+  sampleRate: PropTypes.number.isRequired,
   dateTimeRangeHandler: PropTypes.func.isRequired,
   visibleRoomsHandler: PropTypes.func.isRequired,
   sampleRateHandler: PropTypes.func.isRequired

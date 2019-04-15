@@ -26,8 +26,8 @@ const Graph = props => {
     });
   };
   return (
-    <ChartContainer timeRange={timeRange()} width={800}>
-      <ChartRow height="200">
+    <ChartContainer timeRange={timeRange()} width={860}>
+      <ChartRow height="300">
         <YAxis id="y" label="Temperature" min={0} max={40} width="60" type="linear" />
         <Charts>{lineCharts()}</Charts>
       </ChartRow>
