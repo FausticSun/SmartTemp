@@ -5,8 +5,11 @@ import '../../client/main.css';
 const roomWidth = 150;
 const roomHeight = 250;
 const roomStrokeWidth = 3;
+const numOfRooms = 7;
+const deselectedSvgFillColor = 'rgba(235, 235, 235, 0.9)';
 
 const temperatureToRgba = temperature => {
+  if (!temperature) return deselectedSvgFillColor;
   const temperatureUpper = 40;
   const temperatureLower = 0;
   const temperatureRange = temperatureUpper - temperatureLower;
@@ -33,6 +36,22 @@ const temperatureToRgba = temperature => {
   // console.log(rgba);
 };
 
+const processTemperaturesProp = temperatures => {
+  if (temperatures.length === 0) return temperatures;
+  temperatures.sort((t1, t2) => t1._id - t2._id);
+  if (temperatures.length < numOfRooms) {
+    for (let i = 0; i < numOfRooms; i++) {
+      if (!temperatures[i] || temperatures[i]._id !== i) {
+        temperatures.splice(i, 0, {
+          _id: i,
+          average: null
+        });
+      }
+    }
+  }
+  return temperatures;
+};
+
 const Rooms = props => {
   const { temperatures, visibleRooms, visibleRoomsHandler } = props;
   const roomClickHandler = roomId => {
@@ -45,29 +64,27 @@ const Rooms = props => {
     visibleRoomsHandler(visibleRooms);
   };
 
-  const rooms = temperatures
-    .sort((t1, t2) => t1._id - t2._id)
-    .map(temperature => {
-      const isVisible = visibleRooms.includes(temperature._id);
-      return (
-        <button
-          className={isVisible ? '' : 'hidden'}
-          key={temperature._id}
-          onClick={() => roomClickHandler(temperature._id, visibleRooms, visibleRoomsHandler)}
-          type="button"
+  const rooms = processTemperaturesProp(temperatures).map(temperature => {
+    const isVisible = visibleRooms.includes(temperature._id);
+    return (
+      <button
+        className={isVisible ? '' : 'hidden'}
+        key={temperature._id}
+        onClick={() => roomClickHandler(temperature._id, visibleRooms, visibleRoomsHandler)}
+        type="button"
+      >
+        <svg
+          width={roomWidth + 2 * roomStrokeWidth}
+          height={roomHeight + 2 * roomStrokeWidth}
+          fill={temperatureToRgba(temperature.average)}
+          strokeWidth={roomStrokeWidth}
         >
-          <svg
-            width={roomWidth + 2 * roomStrokeWidth}
-            height={roomHeight + 2 * roomStrokeWidth}
-            fill={temperatureToRgba(temperature.average)}
-            strokeWidth={roomStrokeWidth}
-          >
-            <rect x={roomStrokeWidth} y={roomStrokeWidth} width={roomWidth} height={roomHeight} />
-          </svg>
-          <h2>{`Room ${temperature._id}`}</h2>
-        </button>
-      );
-    });
+          <rect x={roomStrokeWidth} y={roomStrokeWidth} width={roomWidth} height={roomHeight} />
+        </svg>
+        <h2>{`Room ${temperature._id}`}</h2>
+      </button>
+    );
+  });
   return <div className="rooms">{rooms}</div>;
 };
 
