@@ -74,6 +74,13 @@ body {
   justify-content: space-between;
 }
 
+.control-panel .control-panel__date-time {
+  width: 454px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .control-panel .control-panel__sample-rate {
   width: 310px;
   display: flex;

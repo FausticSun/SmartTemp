@@ -77,6 +77,7 @@ class ControlPanel extends React.Component {
     return (
       <div className="control-panel">
         <div className="control-panel__date-time">
+          <span>Date Time Range</span>
           <DateRangeInput
             value={dateTimeRange}
             timePrecision={TimePrecision.SECOND}
