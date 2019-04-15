@@ -5,6 +5,9 @@ import { TimeSeries, TimeRange } from 'pondjs';
 
 const Graph = props => {
   const { temperatures, dateTimeRange, dateTimeRangeHandler } = props;
+  const timeRangeChangeHander = tr => {
+    dateTimeRangeHandler([tr.begin(), tr.end()]);
+  };
   const timeRange = () => {
     if (!dateTimeRange) {
       return null;
@@ -26,7 +29,13 @@ const Graph = props => {
     });
   };
   return (
-    <ChartContainer timeRange={timeRange()} width={800}>
+    <ChartContainer
+      timeRange={timeRange()}
+      width={800}
+      enableDragZoom
+      enablePanZoom
+      onTimeRangeChanged={timeRangeChangeHander}
+    >
       <ChartRow height="200">
         <YAxis id="y" label="Temperature" min={0} max={40} width="60" type="linear" />
         <Charts>{lineCharts()}</Charts>

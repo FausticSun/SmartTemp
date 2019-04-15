@@ -24,7 +24,6 @@ const AppView = props => {
   return (
     <React.Fragment>
       <LoadingOverlay active={loading} spinner fadeSpeed={100} />
-      <dl>{avgTempList}</dl>
       <Chart
         temperatures={temperatures}
         dateTimeRange={dateTimeRange}
