@@ -17,7 +17,7 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-loading-overlay": "^1.0.1",
-    "react-timeseries-charts": "^0.15.5"
+    "react-timeseries-charts": "file:packages/react-timeseries-charts"
   },
   "meteor": {
     "mainModule": {
