@@ -46,12 +46,12 @@ class Graph extends React.Component {
     return (
       <ChartContainer
         timeRange={timeRange()}
-        width={800}
+        width={860}
         enableDragZoom
         enablePanZoom
         onTimeRangeChanged={this.timeRangeChangeHander}
       >
-        <ChartRow height="200">
+        <ChartRow height="300">
           <YAxis id="y" label="Temperature" min={0} max={40} width="60" type="linear" />
           <Charts>{lineCharts()}</Charts>
         </ChartRow>
