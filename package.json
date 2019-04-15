@@ -19,7 +19,7 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-loading-overlay": "^1.0.1",
-    "moment": "latest"
+    "moment": "latest",
     "react-timeseries-charts": "file:packages/react-timeseries-charts",
     "underscore": "^1.9.1"
   },
