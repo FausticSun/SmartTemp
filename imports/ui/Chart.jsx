@@ -46,7 +46,7 @@ class Graph extends React.Component {
     return (
       <ChartContainer
         timeRange={timeRange()}
-        width={800}
+        width={860}
         enableDragZoom
         enablePanZoom
         onTimeRangeChanged={this.timeRangeChangeHander}
@@ -54,7 +54,7 @@ class Graph extends React.Component {
         minTime={new Date('2013-10-02T05:00:00')}
         maxTime={new Date('2013-12-03T15:15:00')}
       >
-        <ChartRow height="200">
+        <ChartRow height="300">
           <YAxis id="y" label="Temperature" min={0} max={40} width="60" type="linear" />
           <Charts>{lineCharts()}</Charts>
         </ChartRow>

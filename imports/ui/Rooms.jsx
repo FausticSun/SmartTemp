@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../../client/main.css';
 
-const roomWidth = 150;
-const roomHeight = 250;
-const roomStrokeWidth = 3;
+const roomWidth = 120;
+const roomHeight = 200;
+const roomStrokeWidth = 2;
 const numOfRooms = 7;
 const deselectedSvgFillColor = 'rgba(235, 235, 235, 0.9)';
 
