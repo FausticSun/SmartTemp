@@ -17,17 +17,10 @@ const AppView = props => {
     dateTimeRangeHandler,
     sampleRateHandler
   } = props;
-  const avgTempList = temperatures.map(x => (
-    <React.Fragment key={x._id}>
-      <dt>{x._id}</dt>
-      <dd>{x.average}</dd>
-    </React.Fragment>
-  ));
 
   return (
     <div className="app-view">
       <LoadingOverlay active={loading} spinner fadeSpeed={100} />
-      <dl>{avgTempList}</dl>
       <ControlPanel
         dateTimeRange={dateTimeRange}
         sampleRate={sampleRate}
@@ -43,6 +36,8 @@ const AppView = props => {
         temperatures={temperatures}
         visibleRooms={visibleRooms}
         visibleRoomsHandler={visibleRoomsHandler}
+        dateTimeRange={dateTimeRange}
+        loading={loading}
       />
     </div>
   );
@@ -58,8 +53,7 @@ AppView.propTypes = {
           timestamp: PropTypes.instanceOf(Date).isRequired,
           temperature: PropTypes.number.isRequired
         })
-      ).isRequired,
-      average: PropTypes.number.isRequired
+      ).isRequired
     })
   ).isRequired,
   visibleRooms: PropTypes.arrayOf(PropTypes.number).isRequired,

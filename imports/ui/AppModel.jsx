@@ -8,8 +8,8 @@ const AppModel = withTracker(({ sampleRate, duration }) => {
     sampleRate: sampleRate.get(),
     duration: duration.get()
   });
-  const loading = !handle.ready();
   const temperatures = Temperatures.find({}).fetch();
+  const loading = !handle.ready() && !!temperatures;
   return {
     loading,
     temperatures,

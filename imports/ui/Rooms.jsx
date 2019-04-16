@@ -74,9 +74,21 @@ class Rooms extends React.Component {
     visibleRoomsHandler(visibleRooms);
   }
 
-  render() {
-    const { temperatures, visibleRooms, visibleRoomsHandler } = this.props;
+  computeAverageTemp(points) {
+    const { dateTimeRange } = this.props;
+    const filteredPoints = points.filter(
+      pt => pt.timestamp > dateTimeRange[0] && pt.timestamp < dateTimeRange[1]
+    );
+    const average =
+      filteredPoints.reduce((acc, curr) => acc + curr.temperature, 0) / filteredPoints.length;
+    return average;
+  }
 
+  render() {
+    const { temperatures, visibleRooms, visibleRoomsHandler, loading } = this.props;
+    if (loading) {
+      return null;
+    }
     const rooms = processTemperaturesProp(temperatures).map(temperature => {
       const isVisible = visibleRooms.includes(temperature._id);
       return (
@@ -89,7 +101,7 @@ class Rooms extends React.Component {
           <svg
             width={roomWidth + 2 * roomStrokeWidth}
             height={roomHeight + 2 * roomStrokeWidth}
-            fill={temperatureToRgba(temperature.average)}
+            fill={temperatureToRgba(this.computeAverageTemp(temperature.points))}
             strokeWidth={roomStrokeWidth}
           >
             <rect x={roomStrokeWidth} y={roomStrokeWidth} width={roomWidth} height={roomHeight} />
@@ -106,11 +118,18 @@ Rooms.propTypes = {
   temperatures: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.number.isRequired,
-      average: PropTypes.number.isRequired
+      points: PropTypes.arrayOf(
+        PropTypes.shape({
+          timestamp: PropTypes.instanceOf(Date).isRequired,
+          temperature: PropTypes.number.isRequired
+        })
+      ).isRequired
     })
   ).isRequired,
   visibleRooms: PropTypes.arrayOf(PropTypes.number).isRequired,
-  visibleRoomsHandler: PropTypes.func.isRequired
+  visibleRoomsHandler: PropTypes.func.isRequired,
+  dateTimeRange: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default Rooms;

@@ -15,7 +15,7 @@ class AppPresenter extends React.Component {
       sampleRate: new ReactiveVar(300),
       duration: new ReactiveVar(pondTimeRange.duration())
     };
-    this.updateDateTimeRange = debounce(this.updateDateTimeRange, 100).bind(this);
+    this.updateDateTimeRange = this.updateDateTimeRange.bind(this);
     this.updateVisibleRooms = debounce(this.updateVisibleRooms, 100).bind(this);
     this.updateSampleRate = debounce(this.updateSampleRate, 100).bind(this);
   }
@@ -24,7 +24,7 @@ class AppPresenter extends React.Component {
     this.setState({ dateTimeRange });
     const { duration } = this.state;
     const pondTimeRange = new TimeRange(dateTimeRange[0], dateTimeRange[1]);
-    if (Math.abs(pondTimeRange.duration() - duration) < duration * 0.01) {
+    if (pondTimeRange.duration() != duration) {
       this.state.duration.set(pondTimeRange.duration());
     }
   }
