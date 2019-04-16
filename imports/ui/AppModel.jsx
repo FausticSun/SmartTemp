@@ -3,21 +3,18 @@ import { withTracker } from 'meteor/react-meteor-data';
 import AppView from './AppView.jsx';
 import Temperatures from '../api/collections/Temperatures';
 
-const AppModel = withTracker(({ dateTimeRange, visibleRooms, sampleRate }) => {
+const AppModel = withTracker(({ sampleRate, duration }) => {
   const handle = Meteor.subscribe('Temperatures', {
-    dateTimeRange: dateTimeRange.get(),
-    visibleRooms: visibleRooms.get(),
-    sampleRate: sampleRate.get()
+    sampleRate: sampleRate.get(),
+    duration: duration.get()
   });
   const loading = !handle.ready();
   const temperatures = Temperatures.find({}).fetch();
-  console.log(temperatures);
   return {
     loading,
     temperatures,
-    dateTimeRange: dateTimeRange.get(),
-    visibleRooms: visibleRooms.get(),
-    sampleRate: sampleRate.get()
+    sampleRate: sampleRate.get(),
+    duration: duration.get()
   };
 })(AppView);
 

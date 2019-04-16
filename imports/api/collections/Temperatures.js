@@ -2,31 +2,26 @@ import { Meteor } from 'meteor/meteor';
 import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
 import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
+import { TimeRange } from 'pondjs';
 
 const Temperatures = new Mongo.Collection('Temperatures');
 
 if (Meteor.isServer) {
-  Meteor.publish('Temperatures', function callback({ dateTimeRange, visibleRooms, sampleRate }) {
-    check(dateTimeRange, [Date]);
-    check(visibleRooms, [Number]);
+  Meteor.publish('Temperatures', function callback({ duration, sampleRate }) {
+    check(duration, Number);
     check(sampleRate, Number);
+    const fullStartDateTime = new Date('2013-10-02T05:00:00');
+    const fullEndDateTime = new Date('2013-12-03T15:15:00');
+    const fullTimeRange = new TimeRange(fullStartDateTime, fullEndDateTime);
+    const fullDuration = fullTimeRange.duration();
 
-    const startDateTime = dateTimeRange[0];
-    const endDateTime = dateTimeRange[1];
+    const totalSamples = Math.round((fullDuration / duration) * sampleRate);
 
     const pipeline = [
       {
-        $match: {
-          timestamp: {
-            $gt: startDateTime,
-            $lt: endDateTime
-          }
-        }
-      },
-      {
         $bucketAuto: {
           groupBy: '$timestamp',
-          buckets: sampleRate,
+          buckets: totalSamples,
           output: {
             data: {
               $push: {
@@ -61,9 +56,6 @@ if (Meteor.isServer) {
               timestamp: '$_id.timestamp',
               temperature: '$temperature'
             }
-          },
-          average: {
-            $avg: '$temperature'
           }
         }
       }

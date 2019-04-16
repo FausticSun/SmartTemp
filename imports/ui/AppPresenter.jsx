@@ -1,18 +1,19 @@
 import React from 'react';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { debounce } from 'underscore';
+import { TimeRange } from 'pondjs';
 import AppModel from './AppModel.jsx';
 
 class AppPresenter extends React.Component {
   constructor(props) {
     super(props);
+    const dateTimeRange = [new Date('2013-10-02T05:00:00'), new Date('2013-12-03T15:15:00')];
+    const pondTimeRange = new TimeRange(dateTimeRange[0], dateTimeRange[1]);
     this.state = {
-      dateTimeRange: new ReactiveVar([
-        new Date('2013-10-02T05:00:00'),
-        new Date('2013-12-03T15:15:00')
-      ]),
-      visibleRooms: new ReactiveVar([0, 1, 2, 3, 4, 5, 6]),
-      sampleRate: new ReactiveVar(300)
+      dateTimeRange,
+      visibleRooms: [0, 1, 2, 3, 4, 5, 6],
+      sampleRate: new ReactiveVar(300),
+      duration: new ReactiveVar(pondTimeRange.duration())
     };
     this.updateDateTimeRange = debounce(this.updateDateTimeRange, 100).bind(this);
     this.updateVisibleRooms = debounce(this.updateVisibleRooms, 100).bind(this);
@@ -20,11 +21,16 @@ class AppPresenter extends React.Component {
   }
 
   updateDateTimeRange(dateTimeRange) {
-    this.state.dateTimeRange.set(dateTimeRange);
+    this.setState({ dateTimeRange });
+    const { duration } = this.state;
+    const pondTimeRange = new TimeRange(dateTimeRange[0], dateTimeRange[1]);
+    if (Math.abs(pondTimeRange.duration() - duration) < duration * 0.01) {
+      this.state.duration.set(pondTimeRange.duration());
+    }
   }
 
   updateVisibleRooms(visibleRooms) {
-    this.state.visibleRooms.set(visibleRooms);
+    this.setState({ visibleRooms });
   }
 
   updateSampleRate(sampleRate) {
@@ -32,12 +38,13 @@ class AppPresenter extends React.Component {
   }
 
   render() {
-    const { dateTimeRange, visibleRooms, sampleRate } = this.state;
+    const { dateTimeRange, visibleRooms, sampleRate, duration } = this.state;
     return (
       <AppModel
         dateTimeRange={dateTimeRange}
         visibleRooms={visibleRooms}
         sampleRate={sampleRate}
+        duration={duration}
         dateTimeRangeHandler={this.updateDateTimeRange}
         visibleRoomsHandler={this.updateVisibleRooms}
         sampleRateHandler={this.updateSampleRate}
