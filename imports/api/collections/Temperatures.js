@@ -3,6 +3,7 @@ import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
 import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
 import { TimeRange } from 'pondjs';
+import { FullTimeRange } from '../../constants.js';
 
 const Temperatures = new Mongo.Collection('Temperatures');
 
@@ -10,10 +11,8 @@ if (Meteor.isServer) {
   Meteor.publish('Temperatures', function callback({ duration, sampleRate }) {
     check(duration, Number);
     check(sampleRate, Number);
-    const fullStartDateTime = new Date('2013-10-02T05:00:00');
-    const fullEndDateTime = new Date('2013-12-03T15:15:00');
-    const fullTimeRange = new TimeRange(fullStartDateTime, fullEndDateTime);
-    const fullDuration = fullTimeRange.duration();
+
+    const fullDuration = FullTimeRange.duration();
 
     const totalSamples = Math.round((fullDuration / duration) * sampleRate);
 
