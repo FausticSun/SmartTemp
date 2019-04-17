@@ -12,10 +12,11 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import Moment from 'moment';
 import { TimeRange } from 'pondjs';
+import { FullTimeRange } from '../constants';
 
-const sampleRateMin = 1;
-const sampleRateMax = 512;
-const samepleRateDefault = 256;
+const sampleRateMin = 8;
+const sampleRateMax = 2048;
+const samepleRateDefault = 2048;
 
 const momentFormatter = format => {
   return {
@@ -81,6 +82,8 @@ class ControlPanel extends React.Component {
           <span>Date Time Range</span>
           <DateRangeInput
             value={[dateTimeRange.begin(), dateTimeRange.end()]}
+            minDate={FullTimeRange.begin()}
+            maxDate={FullTimeRange.end()}
             timePrecision={TimePrecision.MINUTE}
             timePickerProps={{ showArrowButtons: true }}
             allowSingleDayRange

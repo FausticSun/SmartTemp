@@ -8,11 +8,11 @@ class AppPresenter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sampleRate: new ReactiveVar(300),
+      sampleRate: new ReactiveVar(1024),
       duration: new ReactiveVar(FullTimeRange.duration())
     };
     this.updateSampleRate = debounce(this.updateSampleRate, 100).bind(this);
-    this.updateDuration = debounce(this.updateDuration, 100).bind(this);
+    this.updateDuration = debounce(this.updateDuration, 500).bind(this);
   }
 
   updateDuration(newDuration) {
