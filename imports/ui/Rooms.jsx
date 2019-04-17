@@ -80,7 +80,8 @@ class Rooms extends React.Component {
   }
 
   render() {
-    const { temperatures, visibleRooms, visibleRoomsHandler, loading } = this.props;
+    const { temperatures, visibleRoomsHandler, loading } = this.props;
+    const { visibleRooms } = this.state;
     if (loading) {
       return null;
     }
