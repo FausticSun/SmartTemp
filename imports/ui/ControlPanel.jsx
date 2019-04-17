@@ -16,7 +16,7 @@ import { FullTimeRange } from '../constants';
 
 const sampleRateMin = 8;
 const sampleRateMax = 2048;
-const samepleRateDefault = 2048;
+const sampleRateDefault = 2048;
 
 const momentFormatter = format => {
   return {
@@ -35,7 +35,7 @@ class ControlPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sampleRate: samepleRateDefault
+      sampleRate: sampleRateDefault
     };
     this.dateTimeChangeHandler = this.dateTimeChangeHandler.bind(this);
     this.sampleRateChangeHandler = this.sampleRateChangeHandler.bind(this);
