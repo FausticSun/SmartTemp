@@ -15,19 +15,19 @@ import {
 import { TimeSeries, TimeRange } from 'pondjs';
 import { FullTimeRange, AllRooms } from '../constants';
 
-const colors = ['#003f5c', '#374c80', '#7a5195', '#bc5090', '#ef5675', '#ff764a', '#ffa600'];
+const colors = ['#9adbc5', '#eaadcd', '#bed7a0', '#c4b7ea', '#e5bb99', '#70d3e3', '#98c2ec'];
 const graphStyle = styler(
   AllRooms.map(id => ({
     key: id.toString(),
     color: colors[id],
-    width: 1
+    width: 2
   }))
 );
 const legendStyle = styler(
   AllRooms.map(id => ({
     key: id.toString(),
     color: colors[id],
-    width: 2
+    width: 5
   }))
 );
 const categories = AllRooms.map(id => ({
