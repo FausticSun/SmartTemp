@@ -15,7 +15,7 @@ import {
 import { TimeSeries, TimeRange } from 'pondjs';
 import { FullTimeRange, AllRooms } from '../constants';
 
-const colors = ['#4682b4', '#7982c9', '#b77ac9', '#ee6eb1', '#ff6d86', '#ff8351', '#ffa600'];
+const colors = ['#003f5c', '#374c80', '#7a5195', '#bc5090', '#ef5675', '#ff764a', '#ffa600'];
 const graphStyle = styler(
   AllRooms.map(id => ({
     key: id.toString(),
@@ -30,11 +30,19 @@ const categories = AllRooms.map(id => ({
 
 const Graph = props => {
   const { temperatures, dateTimeRange, dateTimeRangeHandler, visibleRooms } = props;
+  const loadedTimeRange = new TimeRange(
+    dateTimeRange.begin().getTime() - dateTimeRange.duration(),
+    dateTimeRange.end().getTime() + dateTimeRange.duration()
+  );
+  const filteredTemperatures = temperatures.map(room => ({
+    _id: room._id,
+    points: room.points.filter(pt => loadedTimeRange.contains(pt.timestamp))
+  }));
   const lineCharts = () => {
     return AllRooms.map(id => {
       const name = id;
       const columns = ['time', id.toString()];
-      const room = temperatures.find(x => x._id === id);
+      const room = filteredTemperatures.find(x => x._id === id);
       const points = !room
         ? []
         : room.points.map(p => [p.timestamp, p.temperature]).sort((a, b) => a[0] - b[0]);
