@@ -28,12 +28,6 @@ const temperatureToRgba = temperature => {
   const alpha = 0.9;
 
   return `rgba(${red.toString()}, ${green.toString()}, ${blue.toString()}, ${alpha.toString()})`;
-  // console.log(greenTemperatureScale);
-  // console.log(blueTemperatureScale);
-  // console.log(temperature);
-  // console.log(green);
-  // console.log(blue);
-  // console.log(rgba);
 };
 
 const processTemperaturesProp = temperatures => {
@@ -85,7 +79,8 @@ class Rooms extends React.Component {
   }
 
   render() {
-    const { temperatures, visibleRooms, visibleRoomsHandler, loading } = this.props;
+    const { temperatures, visibleRoomsHandler, loading } = this.props;
+    const { visibleRooms } = this.state;
     if (loading) {
       return null;
     }
