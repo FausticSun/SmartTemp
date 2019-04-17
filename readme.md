@@ -52,7 +52,7 @@ See "Number of Samples" slider and Graph interaction
 ### Graph interaction
 
 Zoom by clicking and dragging, pan by holding down ctrl and dragging
-![](Func-Pan-And-Zoom.png)
+![](Func-Pan-And-Zoom.gif)
 
 ### Room color change
 
