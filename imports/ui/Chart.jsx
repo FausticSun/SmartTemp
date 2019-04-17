@@ -23,6 +23,13 @@ const graphStyle = styler(
     width: 1
   }))
 );
+const legendStyle = styler(
+  AllRooms.map(id => ({
+    key: id.toString(),
+    color: colors[id],
+    width: 2
+  }))
+);
 const categories = AllRooms.map(id => ({
   key: id.toString(),
   label: `Room ${id}`
@@ -68,7 +75,7 @@ const Graph = props => {
 
   return (
     <div>
-      <Legend type="line" categories={categories} style={graphStyle} />
+      <Legend type="line" categories={categories} style={legendStyle} />
       <ChartContainer
         timeRange={dateTimeRange}
         width={860}
