@@ -50,9 +50,7 @@ const Graph = props => {
       const name = id;
       const columns = ['time', id.toString()];
       const room = filteredTemperatures.find(x => x._id === id);
-      const points = !room
-        ? []
-        : room.points.map(p => [p.timestamp, p.temperature]).sort((a, b) => a[0] - b[0]);
+      const points = !room ? [] : room.points.map(p => [p.timestamp, p.temperature]);
       const data = {
         name,
         columns,
