@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { debounce } from 'underscore';
+import { TimeRange } from 'pondjs';
 import AppModel from './AppModel.jsx';
 import { FullTimeRange, AllRooms } from '../constants';
 
@@ -8,8 +9,8 @@ class AppPresenter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateTimeRange: FullTimeRange,
-      visibleRooms: AllRooms,
+      dateTimeRange: new TimeRange(FullTimeRange.begin(), FullTimeRange.end()),
+      visibleRooms: [...AllRooms],
       sampleRate: new ReactiveVar(300),
       duration: new ReactiveVar(FullTimeRange.duration())
     };

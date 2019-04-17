@@ -11,9 +11,11 @@ import { DateRangeInput, TimePrecision } from '@blueprintjs/datetime';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import Moment from 'moment';
+import { TimeRange } from 'pondjs';
 
 const sampleRateMin = 1;
-const sampleRateMax = 300;
+const sampleRateMax = 512;
+const samepleRateDefault = 256;
 
 const momentFormatter = format => {
   return {
@@ -24,14 +26,15 @@ const momentFormatter = format => {
 };
 
 const COMMON_FORMATS = {
-  SECONDS: momentFormatter('YYYY-MM-DD HH:mm:ss')
+  SECONDS: momentFormatter('YYYY-MM-DD HH:mm:ss'),
+  MINUTES: momentFormatter('YYYY-MM-DD HH:mm')
 };
 
 class ControlPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sampleRate: sampleRateMax
+      sampleRate: samepleRateDefault
     };
     this.dateTimeChangeHandler = this.dateTimeChangeHandler.bind(this);
     this.sampleRateChangeHandler = this.sampleRateChangeHandler.bind(this);
@@ -46,13 +49,11 @@ class ControlPanel extends React.Component {
   }
 
   dateTimeChangeHandler(range) {
-    const { dateTimeRange, dateTimeRangeHandler } = this.props;
+    const { dateTimeRangeHandler } = this.props;
     const start = range[0];
     const end = range[1];
     if (start && end) {
-      dateTimeRangeHandler(range);
-    } else {
-      dateTimeRangeHandler(dateTimeRange);
+      dateTimeRangeHandler(new TimeRange(range[0], range[1]));
     }
   }
 
@@ -79,11 +80,13 @@ class ControlPanel extends React.Component {
         <div className="control-panel__date-time">
           <span>Date Time Range</span>
           <DateRangeInput
-            value={dateTimeRange}
-            timePrecision={TimePrecision.SECOND}
+            value={[dateTimeRange.begin(), dateTimeRange.end()]}
+            timePrecision={TimePrecision.MINUTE}
+            timePickerProps={{ showArrowButtons: true }}
             allowSingleDayRange
+            closeOnSelection={false}
             shortcuts={false}
-            {...COMMON_FORMATS.SECONDS}
+            {...COMMON_FORMATS.MINUTES}
             onChange={selectedRange => this.dateTimeChangeHandler(selectedRange)}
           />
         </div>
@@ -104,7 +107,7 @@ class ControlPanel extends React.Component {
 }
 
 ControlPanel.propTypes = {
-  dateTimeRange: PropTypes.arrayOf(PropTypes.instanceOf(Date)).isRequired,
+  dateTimeRange: PropTypes.instanceOf(TimeRange).isRequired,
   sampleRate: PropTypes.number.isRequired,
   dateTimeRangeHandler: PropTypes.func.isRequired,
   sampleRateHandler: PropTypes.func.isRequired
