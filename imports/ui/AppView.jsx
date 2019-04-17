@@ -6,15 +6,19 @@ import Rooms from './Rooms.jsx';
 import Chart from './Chart.jsx';
 import ControlPanel from './ControlPanel.jsx';
 import '../../client/main.css';
-import { AllRooms } from '../constants';
+import { FullTimeRange, AllRooms } from '../constants';
 
 class AppView extends React.Component {
   constructor(props) {
     super(props);
     const { temperatures } = props;
     this.state = {
+      dateTimeRange: new TimeRange(FullTimeRange.begin(), FullTimeRange.end()),
+      visibleRooms: [...AllRooms],
       temperatures
     };
+    this.updateDateTimeRange = this.updateDateTimeRange.bind(this);
+    this.updateVisibleRooms = this.updateVisibleRooms.bind(this);
   }
 
   static getDerivedStateFromProps(props) {
@@ -25,24 +29,26 @@ class AppView extends React.Component {
     return null;
   }
 
+  updateDateTimeRange(dateTimeRange) {
+    const { durationHandler } = this.props;
+    this.setState({ dateTimeRange });
+    durationHandler(dateTimeRange.duration());
+  }
+
+  updateVisibleRooms(visibleRooms) {
+    this.setState({ visibleRooms });
+  }
+
   render() {
-    const {
-      loading,
-      visibleRoomsHandler,
-      visibleRooms,
-      dateTimeRange,
-      sampleRate,
-      dateTimeRangeHandler,
-      sampleRateHandler
-    } = this.props;
-    const { temperatures } = this.state;
+    const { loading, sampleRateHandler, sampleRate } = this.props;
+    const { dateTimeRange, visibleRooms, temperatures } = this.state;
 
     return (
       <div className="app-view">
         <ControlPanel
           dateTimeRange={dateTimeRange}
           sampleRate={sampleRate}
-          dateTimeRangeHandler={dateTimeRangeHandler}
+          dateTimeRangeHandler={this.updateDateTimeRange}
           sampleRateHandler={sampleRateHandler}
         />
         <LoadingOverlay active={loading} spinner fadeSpeed={100}>
@@ -50,13 +56,13 @@ class AppView extends React.Component {
             temperatures={temperatures}
             visibleRooms={visibleRooms}
             dateTimeRange={dateTimeRange}
-            dateTimeRangeHandler={dateTimeRangeHandler}
+            dateTimeRangeHandler={this.updateDateTimeRange}
           />
         </LoadingOverlay>
         <Rooms
           temperatures={temperatures}
           visibleRooms={visibleRooms}
-          visibleRoomsHandler={visibleRoomsHandler}
+          visibleRoomsHandler={this.updateVisibleRooms}
           dateTimeRange={dateTimeRange}
           loading={loading}
         />
@@ -78,12 +84,9 @@ AppView.propTypes = {
       ).isRequired
     })
   ),
-  visibleRooms: PropTypes.arrayOf(PropTypes.number).isRequired,
-  dateTimeRange: PropTypes.instanceOf(TimeRange).isRequired,
   sampleRate: PropTypes.number.isRequired,
-  dateTimeRangeHandler: PropTypes.func.isRequired,
-  visibleRoomsHandler: PropTypes.func.isRequired,
-  sampleRateHandler: PropTypes.func.isRequired
+  sampleRateHandler: PropTypes.func.isRequired,
+  durationHandler: PropTypes.func.isRequired
 };
 
 AppView.defaultProps = {

@@ -12,9 +12,6 @@ const deselectedSvgFillColor = 'rgba(235, 235, 235, 0.9)';
 class Rooms extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      visibleRooms: props.visibleRooms
-    };
     this.roomClickHandler = this.roomClickHandler.bind(this);
   }
 
@@ -34,15 +31,13 @@ class Rooms extends React.Component {
   }
 
   roomClickHandler(roomId) {
-    const { visibleRoomsHandler } = this.props;
-    const { visibleRooms } = this.state;
+    const { visibleRooms, visibleRoomsHandler } = this.props;
     if (visibleRooms.includes(roomId)) {
       visibleRooms.splice(visibleRooms.indexOf(roomId), 1);
     } else {
       visibleRooms.push(roomId);
       visibleRooms.sort();
     }
-    this.setState({ visibleRooms });
     visibleRoomsHandler(visibleRooms);
   }
 
@@ -74,8 +69,7 @@ class Rooms extends React.Component {
   }
 
   render() {
-    const { visibleRoomsHandler } = this.props;
-    const { visibleRooms } = this.state;
+    const { visibleRooms, visibleRoomsHandler } = this.props;
     const rooms = AllRooms.map(id => {
       return (
         <button
