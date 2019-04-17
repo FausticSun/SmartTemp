@@ -44,7 +44,6 @@ const Graph = props => {
         points
       };
       const series = new TimeSeries(data);
-      console.log(graphStyle);
       const visible = visibleRooms.includes(id);
       return (
         <LineChart
