@@ -3,15 +3,6 @@ body {
   font-family: sans-serif;
 }
 
-._loading_overlay_wrapper ._loading_overlay_overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: -1;
-}
-
 .app-view {
   display: flex;
   flex-direction: column;
@@ -61,7 +52,6 @@ body {
 }
 
 /***********************************************************/
-
 
 /**********************  Control Panel  ********************/
 

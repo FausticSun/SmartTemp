@@ -39,19 +39,20 @@ class AppView extends React.Component {
 
     return (
       <div className="app-view">
-        <LoadingOverlay active={loading} spinner fadeSpeed={100} />
         <ControlPanel
           dateTimeRange={dateTimeRange}
           sampleRate={sampleRate}
           dateTimeRangeHandler={dateTimeRangeHandler}
           sampleRateHandler={sampleRateHandler}
         />
-        <Chart
-          temperatures={temperatures}
-          visibleRooms={visibleRooms}
-          dateTimeRange={dateTimeRange}
-          dateTimeRangeHandler={dateTimeRangeHandler}
-        />
+        <LoadingOverlay active={loading} spinner fadeSpeed={100}>
+          <Chart
+            temperatures={temperatures}
+            visibleRooms={visibleRooms}
+            dateTimeRange={dateTimeRange}
+            dateTimeRangeHandler={dateTimeRangeHandler}
+          />
+        </LoadingOverlay>
         <Rooms
           temperatures={temperatures}
           visibleRooms={visibleRooms}
