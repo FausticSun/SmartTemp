@@ -9,7 +9,7 @@ const AppModel = withTracker(({ sampleRate, duration }) => {
     duration: duration.get()
   });
   const temperatures = Temperatures.find({}).fetch();
-  const loading = !handle.ready() && !!temperatures;
+  const loading = temperatures.length !== 7;
 
   return {
     temperatures,

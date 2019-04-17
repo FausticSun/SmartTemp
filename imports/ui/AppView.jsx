@@ -23,7 +23,7 @@ class AppView extends React.Component {
 
   static getDerivedStateFromProps(props) {
     const { temperatures } = props;
-    if (temperatures) {
+    if (temperatures && temperatures.length === 7) {
       return { temperatures };
     }
     return null;
