@@ -3,29 +3,28 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { debounce } from 'underscore';
 import { TimeRange } from 'pondjs';
 import AppModel from './AppModel.jsx';
+import { FullTimeRange, AllRooms } from '../constants.js';
 
 class AppPresenter extends React.Component {
   constructor(props) {
     super(props);
-    const dateTimeRange = [new Date('2013-10-02T05:00:00'), new Date('2013-12-03T15:15:00')];
-    const pondTimeRange = new TimeRange(dateTimeRange[0], dateTimeRange[1]);
     this.state = {
-      dateTimeRange,
-      visibleRooms: [0, 1, 2, 3, 4, 5, 6],
+      dateTimeRange: FullTimeRange,
+      visibleRooms: AllRooms,
       sampleRate: new ReactiveVar(300),
-      duration: new ReactiveVar(pondTimeRange.duration())
+      duration: new ReactiveVar(FullTimeRange.duration())
     };
     this.updateDateTimeRange = this.updateDateTimeRange.bind(this);
-    this.updateVisibleRooms = debounce(this.updateVisibleRooms, 100).bind(this);
+    this.updateVisibleRooms = this.updateVisibleRooms.bind(this);
     this.updateSampleRate = debounce(this.updateSampleRate, 100).bind(this);
+    this.updateDuration = debounce(this.updateDuration, 100).bind(this);
   }
 
   updateDateTimeRange(dateTimeRange) {
     this.setState({ dateTimeRange });
     const { duration } = this.state;
-    const pondTimeRange = new TimeRange(dateTimeRange[0], dateTimeRange[1]);
-    if (pondTimeRange.duration() != duration) {
-      this.state.duration.set(pondTimeRange.duration());
+    if (dateTimeRange.duration() !== duration) {
+      this.updateDuration(dateTimeRange.duration());
     }
   }
 
@@ -35,6 +34,10 @@ class AppPresenter extends React.Component {
 
   updateSampleRate(sampleRate) {
     this.state.sampleRate.set(sampleRate);
+  }
+
+  updateDuration(duration) {
+    this.state.duration.set(duration);
   }
 
   render() {

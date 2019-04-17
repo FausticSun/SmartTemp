@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Charts, ChartContainer, ChartRow, YAxis, LineChart } from 'react-timeseries-charts';
 import { TimeSeries, TimeRange } from 'pondjs';
+import { FullTimeRange, AllRooms } from '../constants.js';
 
 class Graph extends React.Component {
   constructor(props) {
@@ -51,8 +52,8 @@ class Graph extends React.Component {
         enablePanZoom
         onTimeRangeChanged={this.timeRangeChangeHander}
         minDuration={36000000}
-        minTime={new Date('2013-10-02T05:00:00')}
-        maxTime={new Date('2013-12-03T15:15:00')}
+        minTime={FullTimeRange.begin()}
+        maxTime={FullTimeRange.end()}
       >
         <ChartRow height="300">
           <YAxis id="y" label="Temperature" min={0} max={40} width="60" type="linear" />
