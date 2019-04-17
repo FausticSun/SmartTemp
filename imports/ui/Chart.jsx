@@ -27,7 +27,7 @@ const legendStyle = styler(
   AllRooms.map(id => ({
     key: id.toString(),
     color: colors[id],
-    width: 5
+    width: 4
   }))
 );
 const categories = AllRooms.map(id => ({
