@@ -2,8 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { ReactiveAggregate } from 'meteor/jcbernack:reactive-aggregate';
 import { check } from 'meteor/check';
 import { Mongo } from 'meteor/mongo';
-import { TimeRange } from 'pondjs';
-import { FullTimeRange } from '../../constants.js';
+import { FullTimeRange } from '../../constants';
 
 const Temperatures = new Mongo.Collection('Temperatures');
 

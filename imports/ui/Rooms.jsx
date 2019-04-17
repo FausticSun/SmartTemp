@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../../client/main.css';
+import { AllRooms } from '../constants';
 
 const roomWidth = 120;
 const roomHeight = 200;
@@ -28,12 +29,6 @@ const temperatureToRgba = temperature => {
   const alpha = 0.9;
 
   return `rgba(${red.toString()}, ${green.toString()}, ${blue.toString()}, ${alpha.toString()})`;
-  // console.log(greenTemperatureScale);
-  // console.log(blueTemperatureScale);
-  // console.log(temperature);
-  // console.log(green);
-  // console.log(blue);
-  // console.log(rgba);
 };
 
 const processTemperaturesProp = temperatures => {
